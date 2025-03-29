@@ -2,3 +2,6 @@ fastapi
 uvicorn
 databases[postgresql]
 asyncpg
+pytest
+httpx
+pytest-asyncio
