@@ -5,3 +5,5 @@ asyncpg
 pytest
 httpx
 pytest-asyncio
+python-jose[cryptography]
+passlib[bcrypt]

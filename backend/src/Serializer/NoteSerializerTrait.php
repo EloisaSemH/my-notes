@@ -2,22 +2,22 @@
 
 namespace App\Serializer;
 
-use App\Entity\Notes;
+use App\Entity\Note;
 
-trait NotesSerializerTrait
+trait NoteSerializerTrait
 {
     /**
      * @return array<string, mixed>
      */
     public function serializeNotes(array $notes): array
     {
-        return array_map(fn(Notes $note) => $this->serializeNote($note), $notes);
+        return array_map(fn(Note $note) => $this->serializeNote($note), $notes);
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function serializeNote(Notes $note): array
+    public function serializeNote(Note $note): array
     {
         return [
             'uuid' => $note->getUuid(),

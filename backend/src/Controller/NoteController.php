@@ -2,35 +2,46 @@
 
 namespace App\Controller;
 
-use App\Entity\Notes;
-use App\Serializer\NotesSerializerTrait;
+use App\Entity\Note;
+use App\Serializer\NoteSerializerTrait;
+use App\Validator\NoteValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 
 #[Route('/api/notes')]
-class NotesController extends AbstractController
+#[IsGranted('ROLE_USER')]
+class NoteController extends AbstractController
 {
-    use NotesSerializerTrait;
+    use NoteSerializerTrait;
 
     #[Route('', methods: ['GET'])]
     public function list(EntityManagerInterface $em): JsonResponse
     {
-        $notes = $em->getRepository(Notes::class)->findBy([], ['created_at' => 'DESC']);
+        $user = $this->getUser();
+
+        $notes = $em->getRepository(Note::class)->findBy(['user' => $user], ['created_at' => 'DESC']);
         $data = $this->serializeNotes($notes);
 
         return $this->json($data);
     }
 
     #[Route('', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em, NoteValidator $noteValidator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $errors = $noteValidator->validate($data);
+        if (!empty($errors)) {
+            return $this->json(['errors' => $errors], 400);
+        }
+        $user = $this->getUser();
 
-        $note = new Notes();
+        $note = new Note();
+        $note->setUser($user);
         $note->setUuid(Uuid::v4()->toRfc4122());
         $note->setTitle($data['title'] ?? '');
         $note->setContent($data['content'] ?? '');
@@ -51,16 +62,26 @@ class NotesController extends AbstractController
     #[Route('/{uuid}', methods: ['GET'])]
     public function show(string $uuid, EntityManagerInterface $em): JsonResponse
     {
-        $note = $em->getRepository(Notes::class)->findOneByUuid($uuid);
+        $note = $em->getRepository(Note::class)->findOneByUuid($uuid);
+        if (!$note || $note->getUser() !== $this->getUser()) {
+            return $this->json(['error' => 'Note not found'], 404);
+        }
         $data = $this->serializeNote($note);
         return $this->json($data);
     }
 
     #[Route('/{uuid}', methods: ['PUT'])]
-    public function update(string $uuid, Request $request, EntityManagerInterface $em): JsonResponse
+    public function update(string $uuid, Request $request, EntityManagerInterface $em, NoteValidator $noteValidator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $note = $em->getRepository(Notes::class)->findOneByUuid($uuid);
+        $errors = $noteValidator->validate($data);
+        if (!empty($errors)) {
+            return $this->json(['errors' => $errors], 400);
+        }
+        $note = $em->getRepository(Note::class)->findOneByUuid($uuid);
+        if (!$note || $note->getUser() !== $this->getUser()) {
+            return $this->json(['error' => 'Note not found'], 404);
+        }
         $note->setTitle($data['title'] ?? '');
         $note->setContent($data['content'] ?? '');
         $note->setColor($data['color'] ?? null);
@@ -76,7 +97,10 @@ class NotesController extends AbstractController
     #[Route('/{uuid}', methods: ['DELETE'])]
     public function delete(string $uuid, EntityManagerInterface $em): JsonResponse
     {
-        $note = $em->getRepository(Notes::class)->findOneByUuid($uuid);
+        $note = $em->getRepository(Note::class)->findOneByUuid($uuid);
+        if (!$note || $note->getUser() !== $this->getUser()) {
+            return $this->json(['error' => 'Note not found'], 404);
+        }
         $em->remove($note);
         $em->flush();
 

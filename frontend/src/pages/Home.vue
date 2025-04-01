@@ -146,7 +146,7 @@ onMounted(fetchNotes)
         :key="note.uuid"
         class="mb-4 break-inside-avoid"
       >
-        <v-card class="pa-4 note-card shadow-md" :style="{ backgroundColor: '#' + note.color }" variant="flat">
+        <v-card class="pa-4 note-card shadow-md" :style="{ backgroundColor: '#' + (note.color || 'FFC107') }" variant="flat">
           <v-card-title v-if="!editingNotes[note.uuid]" @click="enableEdit(note.uuid)" class="text-h6">
             {{ note.title }}
           </v-card-title>

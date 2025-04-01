@@ -1,3 +1,42 @@
+<script setup lang="ts">
+const props = defineProps<{
+  title: string
+  content: string
+  color: string
+  editing?: boolean
+  uuid?: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:title', value: string): void
+  (e: 'update:content', value: string): void
+  (e: 'update:color', value: string): void
+  (e: 'submit'): void
+  (e: 'removeNote', uuid: string): void
+}>()
+
+import { computed } from 'vue'
+
+const title = computed({
+  get: () => props.title,
+  set: value => emit('update:title', value)
+})
+
+const content = computed({
+  get: () => props.content,
+  set: value => emit('update:content', value)
+})
+
+const color = computed({
+  get: () => props.color,
+  set: value => emit('update:color', value)
+})
+
+const uuid = computed(() => props.uuid)
+
+const colors = ['FFC107', 'F44336', 'E91E63', '9C27B0', '673AB7', '2196F3', '009688', '4CAF50', '607D8B']
+
+</script>
 <template>
   <v-card
     class="pa-4 note-card shadow-md"
@@ -49,43 +88,3 @@
     </div>
   </v-card>
 </template>
-
-<script setup lang="ts">
-const props = defineProps<{
-  title: string
-  content: string
-  color: string
-  editing?: boolean
-  uuid?: string
-}>()
-
-const emit = defineEmits<{
-  (e: 'update:title', value: string): void
-  (e: 'update:content', value: string): void
-  (e: 'update:color', value: string): void
-  (e: 'submit'): void
-  (e: 'removeNote', uuid: string): void
-}>()
-
-import { computed } from 'vue'
-
-const title = computed({
-  get: () => props.title,
-  set: value => emit('update:title', value)
-})
-
-const content = computed({
-  get: () => props.content,
-  set: value => emit('update:content', value)
-})
-
-const color = computed({
-  get: () => props.color,
-  set: value => emit('update:color', value)
-})
-
-const uuid = computed(() => props.uuid)
-
-const colors = ['FFC107', 'F44336', 'E91E63', '9C27B0', '673AB7', '2196F3', '009688', '4CAF50', '607D8B']
-
-</script>

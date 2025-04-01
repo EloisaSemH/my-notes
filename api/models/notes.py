@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import Column, String, Boolean, DateTime
+from sqlalchemy import Column, String, Boolean, DateTime, Integer
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
@@ -8,7 +8,9 @@ from database import metadata
 notes = sqlalchemy.Table(
     "notes",
     metadata,
-    Column("uuid", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
+    Column("id", Integer, primary_key=True),
+    Column("user_id", Integer, nullable=False),
+    Column("uuid", UUID(as_uuid=True), unique=True, default=uuid.uuid4),
     Column("title", String, nullable=False),
     Column("content", String, nullable=True),
     Column("color", String, nullable=True),

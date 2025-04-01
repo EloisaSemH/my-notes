@@ -2,14 +2,14 @@
 
 namespace App\Tests\Factory;
 
-use App\Entity\Notes;
+use App\Entity\Note;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Notes>
+ * @extends PersistentProxyObjectFactory<Note>
  */
-final class NotesFactory extends PersistentProxyObjectFactory
+final class NoteFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -22,7 +22,7 @@ final class NotesFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Notes::class;
+        return Note::class;
     }
 
     /**
@@ -33,6 +33,7 @@ final class NotesFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
+            'user' => UserFactory::createOne(),
             'content' => self::faker()->text(),
             'created_at' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'title' => self::faker()->text(255),
@@ -50,7 +51,7 @@ final class NotesFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Notes $notes): void {})
+            // ->afterInstantiate(function(Note $notes): void {})
         ;
     }
 }
