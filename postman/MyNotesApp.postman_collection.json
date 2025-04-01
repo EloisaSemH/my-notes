@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "6437d0b0-5d7c-4652-b40a-82e27369481f",
+		"name": "MyNotesApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38998753"
+	},
+	"item": [
+		{
+			"name": "Get notes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer dfsadsa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/notes",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create note",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"python\",\n    \"content\": \"py token\",\n    \"color\": \"FFC107\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/notes",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get note",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/notes/9313dda3-50fb-4b6d-bcc0-d204989b0d4f",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"notes",
+						"9313dda3-50fb-4b6d-bcc0-d204989b0d4f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit note",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"python\",\n    \"content\": \"Patch\",\n    \"color\": \"FFC107\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/notes/9313dda3-50fb-4b6d-bcc0-d204989b0d4f",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"notes",
+						"9313dda3-50fb-4b6d-bcc0-d204989b0d4f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete note",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"python\",\n    \"content\": \"Patch\",\n    \"color\": \"FFC107\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/notes/9313dda3-50fb-4b6d-bcc0-d204989b0d4f",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"notes",
+						"9313dda3-50fb-4b6d-bcc0-d204989b0d4f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"eloisa@gmail.com\",\n    \"password\": \"FFC107FFC107\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Hired da Silva\",\n    \"email\": \"eloisa@gmail.com\",\n    \"password\": \"FFC107FFC107\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot password (PHP only)",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"py2@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/forgot-password",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
